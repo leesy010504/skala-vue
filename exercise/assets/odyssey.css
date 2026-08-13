@@ -1,0 +1,316 @@
+/* "최종본" 탭 — 오뒷세이아 항로 날씨 어드바이저 전용 스타일 (exercise.css의 CSS 변수 토큰 재사용) */
+
+.odyssey-voyage {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.odyssey-disclaimer {
+  font-size: 13px;
+  color: var(--text-muted);
+  background: var(--surface-muted);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 14px;
+  margin: 0;
+}
+
+.odyssey-loading,
+.odyssey-error {
+  text-align: center;
+  color: var(--text-muted);
+}
+
+/* 서브 탭 바 (검색/소개/지도및이야기) — .navigation-bar/.nav-item은 exercise.css 공용 스타일 재사용,
+   router-link가 아니라 버튼이라 활성 상태는 별도 클래스(.is-active)로 표시한다 */
+.odyssey-nav-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  padding: 0;
+}
+.odyssey-nav-btn.is-active {
+  color: var(--accent);
+  border-bottom: 2px solid var(--accent);
+  padding-bottom: 2px;
+}
+
+.odyssey-search {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.odyssey-search-count {
+  margin: 0;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+.odyssey-search-empty {
+  text-align: center;
+  color: #e74c3c;
+  padding: 10px 0;
+}
+.odyssey-search-item {
+  background: var(--surface);
+  border: 1px solid var(--border-strong);
+  border-radius: 8px;
+  padding: 12px;
+  cursor: pointer;
+  transition: border-color 0.15s ease;
+}
+.odyssey-search-item:hover {
+  border-color: var(--accent);
+}
+.odyssey-search-item h4 {
+  margin: 2px 0 4px 0;
+  font-size: 14px;
+}
+
+/* 여정 진행 타임라인 */
+.odyssey-track {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.odyssey-track-label {
+  margin: 0;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+.odyssey-track-label strong {
+  color: var(--text);
+}
+.odyssey-track-rail {
+  position: relative;
+  height: 28px;
+  margin: 0 10px;
+  display: flex;
+  align-items: center;
+}
+.odyssey-track-rail::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--border-strong);
+}
+.odyssey-track-rail-fill {
+  position: absolute;
+  left: 0;
+  height: 4px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, #f5b301, #ffd873);
+  transition: width 0.4s ease;
+}
+.odyssey-track-dot {
+  position: absolute;
+  top: 50%;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--surface);
+  border: 2px solid var(--border-strong);
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+  padding: 0;
+  transition:
+    transform 0.15s ease,
+    border-color 0.15s ease,
+    background 0.15s ease;
+}
+.odyssey-track-dot:hover {
+  border-color: var(--accent);
+}
+.odyssey-track-dot.is-visited {
+  background: #f5b301;
+  border-color: #f5b301;
+}
+.odyssey-track-dot.is-selected {
+  width: 18px;
+  height: 18px;
+  background: #f5b301;
+  border-color: #ffffff;
+  box-shadow: 0 0 0 3px rgba(245, 179, 1, 0.4);
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.odyssey-map {
+  height: 480px;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid var(--border-strong);
+}
+.odyssey-map .leaflet-container {
+  height: 100%;
+  width: 100%;
+}
+
+/* 선택된 웨이포인트 마커: 펄스 링 + 흔들리는 배(⛵) 아이콘 */
+.odyssey-marker-selected-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.odyssey-marker-selected-ring {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #f5b301;
+  border: 2px solid #ffffff;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 0 0 rgba(245, 179, 1, 0.6);
+  animation: odyssey-marker-pulse 1.4s ease-out infinite;
+}
+.odyssey-marker-ship {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  font-size: 20px;
+  line-height: 1;
+  transform-origin: 50% 70%;
+  animation: odyssey-ship-bob 1.8s ease-in-out infinite;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.4));
+}
+@keyframes odyssey-marker-pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(245, 179, 1, 0.6);
+  }
+  70% {
+    box-shadow: 0 0 0 14px rgba(245, 179, 1, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(245, 179, 1, 0);
+  }
+}
+@keyframes odyssey-ship-bob {
+  0%,
+  100% {
+    transform: translate(-50%, -60%) rotate(-10deg);
+  }
+  50% {
+    transform: translate(-50%, -60%) rotate(10deg);
+  }
+}
+
+.odyssey-banner {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 20px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--surface-muted);
+}
+.odyssey-banner h3 {
+  margin: 0 0 4px 0;
+  font-size: 16px;
+}
+.odyssey-banner p {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 14px;
+}
+.odyssey-banner-emoji {
+  font-size: 32px;
+  line-height: 1;
+}
+.odyssey-banner-danger {
+  background: #fdecea;
+  border-color: #f5b7b1;
+}
+html.dark .odyssey-banner-danger {
+  background: #3a1f1f;
+  border-color: #6b3232;
+}
+.odyssey-banner-caution {
+  background: #fff8e1;
+  border-color: #ffe082;
+}
+html.dark .odyssey-banner-caution {
+  background: #3a3320;
+  border-color: #6b5d2e;
+}
+.odyssey-banner-safe {
+  background: var(--success-bg);
+  border-color: var(--success-text);
+}
+
+.odyssey-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 12px;
+}
+
+.odyssey-card {
+  background: var(--surface);
+  border: 1px solid var(--border-strong);
+  border-radius: 8px;
+  padding: 12px;
+  cursor: pointer;
+  transition: border-color 0.15s ease;
+}
+.odyssey-card:hover {
+  border-color: var(--accent);
+}
+.odyssey-card.selected {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px var(--accent) inset;
+}
+.odyssey-card-header {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  margin-bottom: 4px;
+}
+.odyssey-card-header h4 {
+  margin: 0;
+  font-size: 14px;
+}
+.odyssey-order {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+.odyssey-lore {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin: 0 0 8px 0;
+  min-height: 32px;
+}
+.odyssey-metrics {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  font-size: 12px;
+  margin-bottom: 6px;
+}
+.odyssey-muted {
+  color: var(--text-muted);
+}
+.odyssey-badge {
+  display: inline-block;
+  padding: 3px 8px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: bold;
+  color: #fff;
+}
+.odyssey-badge-danger {
+  background: #e74c3c;
+}
+.odyssey-badge-caution {
+  background: #f39c12;
+}
+.odyssey-badge-safe {
+  background: #27ae60;
+}
+.odyssey-badge-unknown {
+  background: var(--text-muted);
+}

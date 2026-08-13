@@ -1,0 +1,39 @@
+{
+  "name": "skala-vue-exercise",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "lint:oxlint": "oxlint . --fix",
+    "lint:eslint": "eslint . --fix",
+    "lint": "run-s lint:*",
+    "format": "prettier --write .",
+    "deploy": "npm run build && gh-pages -d dist"
+  },
+  "dependencies": {
+    "@vue-leaflet/vue-leaflet": "^0.10.1",
+    "axios": "^1.19.0",
+    "element-plus": "^2.14.4",
+    "leaflet": "^1.9.4",
+    "pinia": "^4.0.3",
+    "vue": "^3.5.32",
+    "vue-router": "^5.2.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@vitejs/plugin-vue": "^6.0.6",
+    "@vue/eslint-config-prettier": "^10.2.0",
+    "eslint": "^10.8.1",
+    "eslint-plugin-oxlint": "^1.78.0",
+    "eslint-plugin-vue": "^10.10.0",
+    "gh-pages": "^6.3.0",
+    "globals": "^17.11.0",
+    "npm-run-all2": "^9.0.3",
+    "oxlint": "^1.78.0",
+    "prettier": "^3.9.6",
+    "vite": "^8.0.8"
+  }
+}
